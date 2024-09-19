@@ -16,10 +16,14 @@ export default function Sidebar(){
          </div>
       </div>
       <div className='bg-[#121212] h-[85%] rounded'>
-        <div className='p-4 flex items-center jutify-between'>
+        <div className='p-4 flex items-center justify-between'>
           <div className='flex items-center gap-3'>
             <img className='w-8' src={'./images/stack.png'}></img>
             <p className='font-semibold'>Your Library</p>
+          </div>
+          <div className='flex items-center gap-3'>
+            <img className='w-5' src={'./images/arrow.png'} alt='Arrow Icon'></img>
+            <img className='w-5' src={'./images/plus.png'} alt='Plus Icon'></img>
           </div>
         </div>
       </div>
