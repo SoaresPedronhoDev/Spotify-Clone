@@ -1,11 +1,15 @@
 import React from "react";
+import { Route, Routes } from "react-router-dom";
+import DisplayHome from "./DisplayHome";
 
 
 export default function Display(){
     return(
         <>
-        <div>
-            <p>ola</p>
+        <div className="w-[100%] m-2 px-6 pt-4 rounded bg-[#121212] text-white overflow-auto lg:w-[75%] lg:ml-0">
+            <Routes>
+                <Route path="/" element={<DisplayHome/>}/>
+            </Routes>
         </div>
         </>
     )
