@@ -50,7 +50,7 @@ export default function DisplayAlbum(){
                         <p className="text-[15px] text-center">{item.duration}</p>
                     </div>
              ))
-}
+            }
 
         </>
     )
