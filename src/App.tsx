@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import Sidebar from "./components/Sidebar";
 import Player from "./components/Player";
 import Display from "./components/Display";
+import { PlayerContext } from "./context/PlayerContext";
 
 
 export default function App(){
+
+  const  { audioRef } = useContext(PlayerContext)
+
   return(
     <>
     <div className="bg-black h-screen">
@@ -13,7 +17,7 @@ export default function App(){
         <Display/>
       </div>
       <Player/>
-      <audio preload="auto"></audio>
+      <audio ref={audioRef} preload="auto"></audio>
     </div>
     </>
   )
