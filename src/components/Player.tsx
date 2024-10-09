@@ -1,8 +1,12 @@
-import react from 'react'
+import react, { useContext } from 'react'
 import { assets, songsData } from '../assets/assets'
+import { PlayerContext } from '../context/PlayerContext'
 
 
 export default function Player(){
+
+    const {seekBar,seekBg,playStatus,play,pause} = useContext(PlayerContext)
+
     return(
         <>
         <div className='h-[10%] bg-black flex justify-bewtween items-center text-white px-4'>
@@ -17,14 +21,31 @@ export default function Player(){
                 <div className='flex gap-4'>
                     <img className='w-4 cursor-pointer' src={assets.shuffle_icon} alt='Shuffle Icon'></img>
                     <img className='w-4 cursor-pointer' src={assets.prev_icon} alt='Prev Icon'></img>
-                    <img className='w-4 cursor-pointer' src={assets.play_icon} alt='Play Icon'></img>
+
+                    {playStatus ? (
+                        <img
+                        onClick={pause}
+                        className='w-4 cursor-pointer'
+                        src={assets.pause_icon}
+                        alt='Pause Icon'
+                        />
+                    ) : (
+                        <img
+                        onClick={play}
+                        className='w-4 cursor-pointer'
+                        src={assets.play_icon}
+                        alt='Play Icon'
+                        />
+                    )}
+                                
+                    <img onClick={pause} className='w-4 cursor-pointer' src={assets.pause_icon} alt='Play Icon'></img>
                     <img className='w-4 cursor-pointer' src={assets.next_icon} alt='Next Icon'></img>
                     <img className='w-4 cursor-pointer' src={assets.loop_icon} alt='Loop Icon'></img>
                 </div>
                 <div className=' flex items-center gap-5'>
                     <p>1:23</p>
-                    <div className='w-[60vw] max-w-[500px] bg-gray-300 rounded-full cursor-pointer'>
-                        <hr className='h-1 border-none w-0 bg-green-800 rounded-full'/>
+                    <div ref={seekBg} className='w-[60vw] max-w-[500px] bg-gray-300 rounded-full cursor-pointer'>
+                        <div ref={seekBar} className='h-1 w-0 bg-green-800 rounded-full'></div>
                     </div>
                     <p>3:20</p>
                 </div>
