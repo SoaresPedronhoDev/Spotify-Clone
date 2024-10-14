@@ -5,7 +5,7 @@ import { PlayerContext } from '../context/PlayerContext'
 
 export default function Player(){
 
-    const {seekBar,seekBg,playStatus,play,pause} = useContext(PlayerContext)
+    const {seekBar,seekBg,playStatus,play,pause,time} = useContext(PlayerContext)
 
     return(
         <>
@@ -43,11 +43,11 @@ export default function Player(){
                     <img className='w-4 cursor-pointer' src={assets.loop_icon} alt='Loop Icon'></img>
                 </div>
                 <div className=' flex items-center gap-5'>
-                    <p>1:23</p>
+                    <p>{time.currentTime.minute}:{time.currentTime.second}</p>
                     <div ref={seekBg} className='w-[60vw] max-w-[500px] bg-gray-300 rounded-full cursor-pointer'>
-                        <div ref={seekBar} className='h-1 w-0 bg-green-800 rounded-full'></div>
+                        <div ref={seekBar} className='h-1 w-0 border-none bg-green-800 rounded-full'></div>
                     </div>
-                    <p>3:20</p>
+                    <p>{time.totalTime.minute}:{time.totalTime.second}</p>
                 </div>
             </div>   
             <div className='hidden lg:flex items-center gap-2 opacity-75'>
