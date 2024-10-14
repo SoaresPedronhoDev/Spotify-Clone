@@ -60,12 +60,16 @@ const PlayerContextProvider = ({ children }: Props) => {
   });
 
   const play = () => {
-    if (audioRef.current) {
-      audioRef.current.play();
-      setPlayStatus(true);
-      console.log("Play status set to true");
-    }else{
-      console.log("Audio Element is not found")
+    if (audioRef.current && track.file) {
+      audioRef.current.src = track.file; 
+      audioRef.current.play().then(() => {
+        setPlayStatus(true);
+        console.log("Play status set to true");
+      }).catch((error) => {
+        console.error("Error playing audio:", error);
+      });
+    } else {
+      console.log("Audio Element or Track is not found");
     }
   };
 
@@ -96,8 +100,8 @@ const PlayerContextProvider = ({ children }: Props) => {
   return (
     <PlayerContext.Provider value={contextValue}>
       {children}
-      <audio ref={audioRef} src={track.file} preload="auto"></audio>
-    </PlayerContext.Provider>
+      <audio ref={audioRef} src={track.file} preload="metadata"></audio>
+      </PlayerContext.Provider>
   );
 };
 
