@@ -1,4 +1,4 @@
-import { createContext, useContext, RefObject, ReactNode, useRef, useState } from "react";
+import { createContext, useContext, RefObject, ReactNode, useRef, useState, useEffect } from "react";
 import { songsData } from "../assets/assets";
 
 interface PlayerContextType {
@@ -82,6 +82,28 @@ const PlayerContextProvider = ({ children }: Props) => {
       console.log("Audio Element is not found")
     }
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (audioRef.current) {  
+        audioRef.current.ontimeupdate = () => {
+          const current = audioRef.current;
+          if (current) {
+            setTime({
+              currentTime: {
+                second: Math.floor(audioRef.current.currentTime % 60),
+                minute: Math.floor(audioRef.current.currentTime / 60),
+              },
+              totalTime: {
+                second: Math.floor(audioRef.current.duration % 60),
+                minute: Math.floor(audioRef.current.duration / 60),
+              },
+            });
+          }
+        };
+      }
+    }, 1000);
+  }, [audioRef]);
 
   const contextValue = {
     audioRef,
