@@ -22,6 +22,7 @@ export default function DisplayHome(){
             {songsData.map((item, index) => (
                 <SongItem 
                     key={index} 
+                    id={item.id}
                     name={item.name} 
                     desc={item.desc} 
                     image={item.image} 

@@ -22,7 +22,9 @@ interface PlayerContextType {
   setTime: (time: any) => void;
   play: () => void;
   pause: () => void;
+  playWithId: (id: number) => void; 
 }
+
 
 const defaultValue: PlayerContextType = {
   audioRef: { current: null },
@@ -39,6 +41,7 @@ const defaultValue: PlayerContextType = {
   setTime: () => {},
   play: () => {},
   pause: () => {},
+  playWithId: (id: number) => {}, 
 };
 
 export const PlayerContext = createContext<PlayerContextType>(defaultValue);
@@ -83,10 +86,32 @@ const PlayerContextProvider = ({ children }: Props) => {
     }
   };
 
+  const playWithId = (id: number) => {
+    console.log("Attempting to play song with ID:", id);  
+    const selectedTrack = songsData.find(song => song.id === id);
+    if (selectedTrack) {
+      console.log("Selected track:", selectedTrack); 
+      setTrack(selectedTrack); 
+      if (audioRef.current) {
+        audioRef.current.src = selectedTrack.file;  
+        audioRef.current.play().then(() => {
+          setPlayStatus(true);  
+          console.log("Playing song:", selectedTrack.name);
+        }).catch((error) => {
+          console.error("Error playing audio:", error);
+        });
+      }
+    } else {
+      console.error("Track not found with id:", id);  
+    }
+  }
+  
+
   useEffect(() => {
     setTimeout(() => {
       if (audioRef.current) {  
         audioRef.current.ontimeupdate = () => {
+          seekBar.current.style.width = (Math.floor(audioRef.current.currentTime/audioRef.current.duration*100)) + "%"
           const current = audioRef.current;
           if (current) {
             setTime({
@@ -117,6 +142,7 @@ const PlayerContextProvider = ({ children }: Props) => {
     setTime,
     play,
     pause,
+    playWithId
   };
 
   return (
