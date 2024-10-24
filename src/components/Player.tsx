@@ -1,4 +1,4 @@
-import react, { useContext } from 'react'
+import  { useContext } from 'react'
 import { assets, songsData } from '../assets/assets'
 import { PlayerContext } from '../context/PlayerContext'
 

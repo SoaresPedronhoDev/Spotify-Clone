@@ -1,6 +1,5 @@
 import {
   createContext,
-  useContext,
   RefObject,
   ReactNode,
   useRef,
@@ -50,7 +49,7 @@ const defaultValue: PlayerContextType = {
   setTime: () => {},
   play: () => {},
   pause: () => {},
-  playWithId: (id: number) => {},
+  playWithId: () => {},
   previous: () => {},
   next: () => {},
 };
