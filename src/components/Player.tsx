@@ -5,7 +5,7 @@ import { PlayerContext } from '../context/PlayerContext'
 
 export default function Player(){
 
-    const {seekBar,seekBg,playStatus,play,pause,time} = useContext(PlayerContext)
+    const {seekBar,seekBg,playStatus,play,pause,time,previous,next} = useContext(PlayerContext)
 
     return(
         <>
@@ -20,7 +20,7 @@ export default function Player(){
             <div className='flex flex-col items-center gap-1 m-auto'>
                 <div className='flex gap-4'>
                     <img className='w-4 cursor-pointer' src={assets.shuffle_icon} alt='Shuffle Icon'></img>
-                    <img className='w-4 cursor-pointer' src={assets.prev_icon} alt='Prev Icon'></img>
+                    <img onClick={previous} className='w-4 cursor-pointer' src={assets.prev_icon} alt='Prev Icon'></img>
 
                     {playStatus ? (
                         <img
@@ -39,7 +39,7 @@ export default function Player(){
                     )}
                                 
                     <img onClick={pause} className='w-4 cursor-pointer' src={assets.pause_icon} alt='Play Icon'></img>
-                    <img className='w-4 cursor-pointer' src={assets.next_icon} alt='Next Icon'></img>
+                    <img onClick={next} className='w-4 cursor-pointer' src={assets.next_icon} alt='Next Icon'></img>
                     <img className='w-4 cursor-pointer' src={assets.loop_icon} alt='Loop Icon'></img>
                 </div>
                 <div className=' flex items-center gap-5'>

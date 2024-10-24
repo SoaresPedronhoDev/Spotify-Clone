@@ -1,4 +1,12 @@
-import { createContext, useContext, RefObject, ReactNode, useRef, useState, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  RefObject,
+  ReactNode,
+  useRef,
+  useState,
+  useEffect,
+} from "react";
 import { songsData } from "../assets/assets";
 
 interface PlayerContextType {
@@ -22,9 +30,10 @@ interface PlayerContextType {
   setTime: (time: any) => void;
   play: () => void;
   pause: () => void;
-  playWithId: (id: number) => void; 
+  playWithId: (id: number) => void;
+  previous: () => void;
+  next: () => void;
 }
-
 
 const defaultValue: PlayerContextType = {
   audioRef: { current: null },
@@ -41,7 +50,9 @@ const defaultValue: PlayerContextType = {
   setTime: () => {},
   play: () => {},
   pause: () => {},
-  playWithId: (id: number) => {}, 
+  playWithId: (id: number) => {},
+  previous: () => {},
+  next: () => {},
 };
 
 export const PlayerContext = createContext<PlayerContextType>(defaultValue);
@@ -64,13 +75,16 @@ const PlayerContextProvider = ({ children }: Props) => {
 
   const play = () => {
     if (audioRef.current && track.file) {
-      audioRef.current.src = track.file; 
-      audioRef.current.play().then(() => {
-        setPlayStatus(true);
-        console.log("Play status set to true");
-      }).catch((error) => {
-        console.error("Error playing audio:", error);
-      });
+      audioRef.current.src = track.file;
+      audioRef.current
+        .play()
+        .then(() => {
+          setPlayStatus(true);
+          console.log("Play status set to true");
+        })
+        .catch((error) => {
+          console.error("Error playing audio:", error);
+        });
     } else {
       console.log("Audio Element or Track is not found");
     }
@@ -81,53 +95,90 @@ const PlayerContextProvider = ({ children }: Props) => {
       audioRef.current.pause();
       setPlayStatus(false);
       console.log("Play status set to false");
-    }else{
-      console.log("Audio Element is not found")
+    } else {
+      console.log("Audio Element is not found");
     }
   };
 
   const playWithId = (id: number) => {
-    console.log("Attempting to play song with ID:", id);  
-    const selectedTrack = songsData.find(song => song.id === id);
+    const selectedTrack = songsData.find((song) => song.id === id);
     if (selectedTrack) {
-      console.log("Selected track:", selectedTrack); 
-      setTrack(selectedTrack); 
+      setTrack(selectedTrack);
       if (audioRef.current) {
-        audioRef.current.src = selectedTrack.file;  
-        audioRef.current.play().then(() => {
-          setPlayStatus(true);  
-          console.log("Playing song:", selectedTrack.name);
-        }).catch((error) => {
-          console.error("Error playing audio:", error);
-        });
+        audioRef.current.src = selectedTrack.file;
+
+        audioRef.current.addEventListener(
+          "canplaythrough",
+          () => {
+            audioRef.current
+              ?.play()
+              .then(() => {
+                setPlayStatus(true);
+              })
+              .catch((error) => {
+                console.error("Error playing audio:", error);
+              });
+          },
+          { once: true }
+        );
       }
     } else {
-      console.error("Track not found with id:", id);  
+      console.error("Track not found with id:", id);
     }
-  }
+  };
+
+  const previous = () => {
+    if (track.id > 0) {
+      const prevTrack = songsData[track.id - 1];
+      setTrack(prevTrack);
+    }
+  };
   
+  const next = () => {
+    if (track.id < songsData.length - 1) {
+      const nextTrack = songsData[track.id + 1];
+      setTrack(nextTrack);
+    }
+  };
+  
+  useEffect(() => {
+    if (audioRef.current && track.file) {
+      audioRef.current.src = track.file;
+  
+      audioRef.current.addEventListener(
+        "canplaythrough",
+        () => {
+          if (playStatus) {
+            audioRef.current?.play();
+          }
+        },
+        { once: true }
+      );
+    }
+  }, [track, playStatus]);
 
   useEffect(() => {
-    setTimeout(() => {
-      if (audioRef.current) {  
-        audioRef.current.ontimeupdate = () => {
-          seekBar.current.style.width = (Math.floor(audioRef.current.currentTime/audioRef.current.duration*100)) + "%"
+    if (audioRef.current) {
+      audioRef.current.ontimeupdate = () => {
+        if (seekBar.current && audioRef.current) {
+          seekBar.current.style.width =
+            Math.floor(
+              (audioRef.current.currentTime / audioRef.current.duration) * 100
+            ) + "%";
           const current = audioRef.current;
-          if (current) {
-            setTime({
-              currentTime: {
-                second: Math.floor(audioRef.current.currentTime % 60),
-                minute: Math.floor(audioRef.current.currentTime / 60),
-              },
-              totalTime: {
-                second: Math.floor(audioRef.current.duration % 60),
-                minute: Math.floor(audioRef.current.duration / 60),
-              },
-            });
-          }
-        };
-      }
-    }, 1000);
+          setTime({
+            currentTime: {
+              second: Math.floor(current.currentTime % 60),
+              minute: Math.floor(current.currentTime / 60),
+            },
+            totalTime: {
+              second: Math.floor(current.duration % 60),
+              minute: Math.floor(current.duration / 60),
+            },
+          });
+        }
+      };
+    }
   }, [audioRef]);
 
   const contextValue = {
@@ -142,14 +193,16 @@ const PlayerContextProvider = ({ children }: Props) => {
     setTime,
     play,
     pause,
-    playWithId
+    playWithId,
+    previous,
+    next,
   };
 
   return (
     <PlayerContext.Provider value={contextValue}>
       {children}
-      <audio ref={audioRef} src={track.file} preload="metadata"></audio>
-      </PlayerContext.Provider>
+      <audio ref={audioRef} preload="metadata"></audio>
+    </PlayerContext.Provider>
   );
 };
 
