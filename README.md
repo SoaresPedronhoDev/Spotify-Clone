@@ -47,7 +47,7 @@ TailwindCSS
 
 🙋‍♂️ Autor
 Pedro Henrique Domingues
-LinkedIn
+[LinkedIn](https://www.linkedin.com/in/pedro-henrique-domingues-109178326/)
 
 
 📄 Licença
