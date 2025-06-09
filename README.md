@@ -16,19 +16,19 @@ Projeto clone do Spotify, desenvolvido com React, TypeScript, Vite e TailwindCSS
 
 bash
 git clone https://github.com/seuusuario/spotify-clone.git](https://github.com/SoaresPedronhoDev/Spotify-Clone.git
-cd spotify-clone
+cd spotify clone
 
 ---
 
 ### 3. Instalar as dependências
-bash
+
 npm install
 
 ---
 
 ### 4. Rodar o projeto
 
-bash
+
 npm run dev
 
 O projeto rodará na porta 5173. Acesse: http://localhost:5173
@@ -48,13 +48,8 @@ TailwindCSS
 🙋‍♂️ Autor
 Pedro Henrique Domingues
 LinkedIn
-Portfólio
+
 
 📄 Licença
 MIT
 
-nginx
-Copiar
-Editar
-
-Se precisar de mais alguma coisa, só avisar!
