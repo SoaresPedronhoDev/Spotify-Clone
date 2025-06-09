@@ -15,7 +15,7 @@ Projeto clone do Spotify, desenvolvido com React, TypeScript, Vite e TailwindCSS
 ### 2. Clonar o repositório
 
 bash
-git clone https://github.com/seuusuario/spotify-clone.git
+git clone https://github.com/seuusuario/spotify-clone.git](https://github.com/SoaresPedronhoDev/Spotify-Clone.git
 cd spotify-clone
 
 ---
